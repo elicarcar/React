@@ -1,6 +1,6 @@
 import React from "react";
 
-const WeatherDetails = ({ min_temp, max_temp, lat, lon, id }) => {
+const WeatherDetails = ({ min_temp, max_temp, lat, lon }) => {
   return (
     <div>
       <ul>
