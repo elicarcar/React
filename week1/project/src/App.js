@@ -5,6 +5,7 @@ import CountryNames from "./components/CountryNames";
 import WeatherDesc from "./components/WeatherDesc";
 import WeatherDetails from "./components/WeatherDetails";
 import Title from "./components/Title";
+import kelvinToCelsius from "kelvin-to-celsius";
 import "./App.css";
 
 function App() {
@@ -20,8 +21,8 @@ function App() {
               weather_desc={data.weather.map(w => w.description)}
             />
             <WeatherDetails
-              min_temp={data.main.temp_min}
-              max_temp={data.main.temp_max}
+              min_temp={kelvinToCelsius(data.main.temp_min).toFixed(1)}
+              max_temp={kelvinToCelsius(data.main.temp_max).toFixed(1)}
               lat={data.coord.lat}
               lon={data.coord.lon}
             />
