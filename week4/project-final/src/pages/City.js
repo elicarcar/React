@@ -11,13 +11,19 @@ import {
 } from "recharts";
 import { useParams } from "react-router-dom";
 import kelvinToCelsius from "kelvin-to-celsius";
+import WeatherCards from "../components/WeatherCards";
+import CountryNames from "../components/CountryNames";
+import WeatherDesc from "../components/WeatherDesc";
+import WeatherDetails from "../components/WeatherDetails";
+import uuid from "uuid/v1";
 import "../App.css";
 
 const City = () => {
   const { cityId } = useParams();
   const [cityWeatherData, setCityWeatherData] = useState([]);
   const [generalWeatherInfo, setGeneralWeatherInfo] = useState({});
-  const CITY_API = `https://api.openweathermap.org/data/2.5/forecast?id=${cityId}&appid=${process.env.local.REACT_APP_OPENWEATHERMAP_API_KEY}`;
+  const [currentFocusDay, setCurrentFocusDay] = useState(0);
+  const CITY_API = `https://api.openweathermap.org/data/2.5/forecast?id=${cityId}&appid=${process.env.REACT_APP_OPENWEATHERMAP_API_KEY}`;
 
   async function fetchCityDetails() {
     const res = await fetch(CITY_API);
@@ -47,12 +53,39 @@ const City = () => {
     Object.assign(city, maximum_temp);
   });
 
+  function demoOnClick(clickedWeather) {
+    if (clickedWeather === null) {
+      return;
+    }
+    const index = clickedWeather.activeTooltipIndex;
+    setCurrentFocusDay(index);
+    console.log(index);
+  }
+
+  const specificTime = cityWeatherData[currentFocusDay];
+
+  const name = ((generalWeatherInfo || {}).city || {}).name;
   return (
     <div className="chart">
-      {console.log(generalWeatherInfo)}
-      <h1> 5 Day Weather ForeCast of </h1>
+      <h1> 5 Day Weather Forecast of {name} </h1>
+      {console.log(cityWeatherData[currentFocusDay])}
+
+      {cityWeatherData.length > 0 && (
+        <WeatherCards key={uuid()}>
+          <CountryNames cityId={cityId} country_name={name} />
+          {specificTime.weather.map(w => (
+            <WeatherDesc weather={w.main} weather_desc={w.description} />
+          ))}
+        </WeatherCards>
+      )}
+
       <ResponsiveContainer>
-        <AreaChart height={300} data={cityWeatherData} className="area-chart">
+        <AreaChart
+          height={300}
+          data={cityWeatherData}
+          className="area-chart"
+          onClick={demoOnClick}
+        >
           <defs>
             <linearGradient id="main" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#eee" stopOpacity={0.8} />

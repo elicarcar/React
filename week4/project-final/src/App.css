@@ -19,6 +19,15 @@ li {
   margin: 5px 0px 5px 0px;
 }
 
+a {
+  text-decoration-line: none;
+  color: black;
+}
+
+a:hover {
+  text-decoration-line: underline;
+}
+
 .loading {
   text-align: center;
 }
@@ -37,4 +46,9 @@ li {
 
   box-sizing: border-box;
   padding: 30px;
+}
+
+.disabled {
+  pointer-events: none;
+  cursor: default;
 }

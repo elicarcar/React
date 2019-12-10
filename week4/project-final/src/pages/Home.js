@@ -19,7 +19,7 @@ const HomePage = () => {
   async function fetchWeather(city) {
     try {
       const res = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.local.REACT_APP_OPENWEATHERMAP_API_KEY}`
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.REACT_APP_OPENWEATHERMAP_API_KEY}`
       );
       setStatus("Loading");
       if (!res.ok) {
@@ -74,14 +74,10 @@ const HomePage = () => {
       {status === "Success" &&
         cityList.map(city => (
           <React.Fragment>
-            <WeatherCards
-              key={uuid()}
-              id={city.id}
-              key={uuid()}
-              cityId={city.id}
-            >
+            <WeatherCards key={uuid()} id={city.id}>
               <DeleteButton deleteItem={() => deleteItem(city.id)} />
               <CountryNames
+                cityId={city.id}
                 country_name={city.name}
                 country_code={city.sys.country}
               />

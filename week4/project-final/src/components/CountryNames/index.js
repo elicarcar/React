@@ -1,11 +1,14 @@
 import React from "react";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
-const CountryNames = ({ country_name, country_code }) => {
+const CountryNames = ({ country_name, country_code, cityId }) => {
   return (
     <div>
-      <h2>
-        {country_name}, {country_code}
-      </h2>
+      <Link to={`/${cityId}`}>
+        <h2>
+          {country_name}, {country_code}
+        </h2>
+      </Link>
     </div>
   );
 };
