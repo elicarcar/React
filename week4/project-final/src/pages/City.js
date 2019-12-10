@@ -64,12 +64,14 @@ const City = () => {
   }, []);
 
   cityWeatherData.forEach(city => {
-    const main_temp = { main_temp: kelvinToCelsius(city.main.temp).toFixed(1) };
+    const main_temp = {
+      main_temp: Math.floor(kelvinToCelsius(city.main.temp).toFixed(1))
+    };
     const minimum_temp = {
-      minimum_temp: kelvinToCelsius(city.main.temp_min).toFixed(1)
+      minimum_temp: Math.floor(kelvinToCelsius(city.main.temp_min).toFixed(1))
     };
     const maximum_temp = {
-      maximum_temp: kelvinToCelsius(city.main.temp_max).toFixed(1)
+      maximum_temp: Math.floor(kelvinToCelsius(city.main.temp_max).toFixed(1))
     };
     Object.assign(city, main_temp);
     Object.assign(city, minimum_temp);
@@ -98,7 +100,6 @@ const City = () => {
     }
     const index = clickedWeather.activeTooltipIndex;
     setCurrentFocusDay(index);
-    console.log(index);
   }
 
   const clickedDay = cityWeatherData[currentFocusDay];
@@ -112,7 +113,7 @@ const City = () => {
           <img
             className="back-arrow"
             src={backArrow}
-            alt={backArrow}
+            alt="click to go back"
             onClick={() => history.push("/")}
           />
           <h1> 5 Day Weather Forecast of {name} </h1>
@@ -129,41 +130,40 @@ const City = () => {
               </React.Fragment>
             ))}
             <ul key={uuid()}>
-              <li>{`Minumum temp: ${clickedDay.maximum_temp}`}</li>
-              <li>{`Maximum temp: ${clickedDay.minimum_temp}`}</li>
+              <li>{`Minumum temp: ${clickedDay.minimum_temp}`}</li>
+              <li>{`Maximum temp: ${clickedDay.maximum_temp}`}</li>
             </ul>
           </WeatherCards>
 
           <ResponsiveContainer height={400}>
             <AreaChart
-              height={300}
+              height={400}
               data={cityWeatherData}
               className="area-chart"
               onClick={indexOnClick}
             >
               <defs>
                 <linearGradient id="main" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#eee" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#eee" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#eee" stopOpacity={1} />
+                  <stop offset="95%" stopColor="#eee" stopOpacity={1} />
                 </linearGradient>
                 <linearGradient id="min" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#8884d8" stopOpacity={0.5} />
+                  <stop offset="95%" stopColor="#8884d8" stopOpacity={0.8} />
                 </linearGradient>
                 <linearGradient id="max" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="red" stopOpacity={0.8} />
                   <stop offset="95%" stopColor="red" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="1 1" />
+              <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="dt_txt" />
-              <YAxis type="number" domain={[-5, "maximum_temp"]} />
+              <YAxis />
               <Tooltip />
               <Area
-                height={600}
                 type="monotone"
-                dataKey={"main_temp"}
-                stroke="#eee"
+                dataKey="main_temp"
+                stroke="#888"
                 fill="url(#main)"
                 fillOpacity={1}
               />
