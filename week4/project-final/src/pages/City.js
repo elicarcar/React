@@ -169,7 +169,6 @@ const City = () => {
                 fillOpacity={1}
               />
               <Area
-                className="areas"
                 type="monotone"
                 dataKey="minimum_temp"
                 stroke="#8884d8"
@@ -177,14 +176,13 @@ const City = () => {
                 fillOpacity={1}
               />
               <Area
-                className="areas"
                 type="monotone"
                 dataKey="maximum_temp"
                 stroke="red"
                 fill="url(#max)"
                 fillOpacity={1}
               />
-              <Brush dataKey="dt_txt" height={40} stroke="#8884d8" />
+              <Brush dataKey="dt_txt" height={40} stroke="#ad62aa" />
             </AreaChart>
           </ResponsiveContainer>
         </div>
