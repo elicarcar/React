@@ -114,7 +114,6 @@ const City = () => {
             src={backArrow}
             alt={backArrow}
             onClick={() => history.push("/")}
-            style={{ cursor: "pointer" }}
           />
           <h1> 5 Day Weather Forecast of {name} </h1>
           <WeatherCards key={uuid()}>
