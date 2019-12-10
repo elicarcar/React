@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -9,13 +11,16 @@ import {
   Tooltip,
   Brush
 } from "recharts";
-import { useParams } from "react-router-dom";
-import kelvinToCelsius from "kelvin-to-celsius";
 import WeatherCards from "../components/WeatherCards";
 import CountryNames from "../components/CountryNames";
 import WeatherDesc from "../components/WeatherDesc";
-import WeatherDetails from "../components/WeatherDetails";
+import rainy from "../icons/rainy-icon-1.jpg";
+import snowy from "../icons/snowflake.png";
+import sunny from "../icons/sunny.png";
+import cloudy from "../icons/cloudy-icon-9.jpg";
+import backArrow from "../icons/left-arrow-in-circular-button-black-symbol.png";
 import uuid from "uuid/v1";
+import kelvinToCelsius from "kelvin-to-celsius";
 import "../App.css";
 
 const City = () => {
@@ -23,14 +28,29 @@ const City = () => {
   const [cityWeatherData, setCityWeatherData] = useState([]);
   const [generalWeatherInfo, setGeneralWeatherInfo] = useState({});
   const [currentFocusDay, setCurrentFocusDay] = useState(0);
+  const [status, setStatus] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const CITY_API = `https://api.openweathermap.org/data/2.5/forecast?id=${cityId}&appid=${process.env.REACT_APP_OPENWEATHERMAP_API_KEY}`;
 
   async function fetchCityDetails() {
-    const res = await fetch(CITY_API);
-    const dailyWeatherData = await res.json();
-    const { list } = dailyWeatherData;
-    setGeneralWeatherInfo(dailyWeatherData);
-    setCityWeatherData(list);
+    try {
+      const res = await fetch(CITY_API);
+      setStatus("Loading");
+      if (!res.ok) {
+        throw Error("An error occured while fetching the data");
+      }
+      const dailyWeatherData = await res.json();
+
+      const { list } = dailyWeatherData;
+      setGeneralWeatherInfo(dailyWeatherData);
+      setCityWeatherData(list);
+      setStatus("Success");
+    } catch (error) {
+      if (error) {
+        setStatus("Error");
+        setErrorMsg(error);
+      }
+    }
   }
 
   useEffect(() => {
@@ -53,7 +73,23 @@ const City = () => {
     Object.assign(city, maximum_temp);
   });
 
-  function demoOnClick(clickedWeather) {
+  function switchWeatherIcons(currWeather) {
+    switch (currWeather) {
+      case "Rain":
+        return rainy;
+      case "Clouds":
+        return cloudy;
+      case "Clear":
+        return sunny;
+      case "Snow":
+        return snowy;
+
+      default:
+        return "There is nothing to show";
+    }
+  }
+
+  function indexOnClick(clickedWeather) {
     if (clickedWeather === null) {
       return;
     }
@@ -67,6 +103,7 @@ const City = () => {
   const name = ((generalWeatherInfo || {}).city || {}).name;
   return (
     <div className="chart">
+      <img className="back-arrow" src={backArrow} alt={backArrow} />
       <h1> 5 Day Weather Forecast of {name} </h1>
       {console.log(cityWeatherData[currentFocusDay])}
 
@@ -74,8 +111,19 @@ const City = () => {
         <WeatherCards key={uuid()}>
           <CountryNames cityId={cityId} country_name={name} />
           {specificTime.weather.map(w => (
-            <WeatherDesc weather={w.main} weather_desc={w.description} />
+            <React.Fragment>
+              <img
+                className="icons"
+                src={switchWeatherIcons(w.main)}
+                alt={w.main}
+              />
+              <WeatherDesc weather={w.main} weather_desc={w.description} />
+            </React.Fragment>
           ))}
+          <ul key={uuid()}>
+            <li>{`Minumum temp: ${specificTime.maximum_temp}`}</li>
+            <li>{`Maximum temp: ${specificTime.minimum_temp}`}</li>
+          </ul>
         </WeatherCards>
       )}
 
@@ -84,7 +132,7 @@ const City = () => {
           height={300}
           data={cityWeatherData}
           className="area-chart"
-          onClick={demoOnClick}
+          onClick={indexOnClick}
         >
           <defs>
             <linearGradient id="main" x1="0" y1="0" x2="0" y2="1">
@@ -100,7 +148,7 @@ const City = () => {
               <stop offset="95%" stopColor="red" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="1 1" />
           <XAxis dataKey="dt_txt" />
           <YAxis />
           <Tooltip />
