@@ -117,8 +117,6 @@ const City = () => {
             style={{ cursor: "pointer" }}
           />
           <h1> 5 Day Weather Forecast of {name} </h1>
-          {console.log(cityWeatherData[currentFocusDay])}
-
           <WeatherCards key={uuid()}>
             <CountryNames cityId={cityId} country_name={name} />
             {clickedDay.weather.map(w => (
