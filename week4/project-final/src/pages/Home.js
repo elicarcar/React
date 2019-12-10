@@ -74,7 +74,7 @@ const HomePage = () => {
       {status === "Success" &&
         cityList.map(city => (
           <React.Fragment>
-            <WeatherCards key={uuid()} id={city.id}>
+            <WeatherCards id={city.id}>
               <DeleteButton deleteItem={() => deleteItem(city.id)} />
               <CountryNames
                 cityId={city.id}
