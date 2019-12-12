@@ -33,50 +33,35 @@ const City = () => {
   const [currentFocusDay, setCurrentFocusDay] = useState(0);
   const [status, setStatus] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const CITY_API = `https://api.openweathermap.org/data/2.5/forecast?id=${cityId}&appid=${process.env.REACT_APP_OPENWEATHERMAP_API_KEY}`;
+  const forecast_API = `https://api.openweathermap.org/data/2.5/forecast?id=${cityId}&units=metric&appid=${process.env.REACT_APP_OPENWEATHERMAP_API_KEY}`;
 
   async function fetchCityDetails() {
     try {
       setStatus("Loading");
-      const res = await fetch(CITY_API);
+      const res = await fetch(forecast_API);
       if (!res.ok) {
         throw Error("An error occured while fetching the data");
       }
       const dailyWeatherData = await res.json();
 
       const { list } = dailyWeatherData;
+      console.log(list);
       setGeneralWeatherInfo(dailyWeatherData);
       setCityWeatherData(list);
       setStatus("Success");
     } catch (error) {
       if (error) {
         setStatus("Error");
-        setErrorMessage(error);
+        setErrorMessage(error.message);
       }
     }
   }
-
   useEffect(() => {
     fetchCityDetails();
     return () => {
       fetchCityDetails();
     };
   }, []);
-
-  cityWeatherData.forEach(city => {
-    const main_temp = {
-      main_temp: Math.floor(kelvinToCelsius(city.main.temp).toFixed(1))
-    };
-    const minimum_temp = {
-      minimum_temp: Math.floor(kelvinToCelsius(city.main.temp_min).toFixed(1))
-    };
-    const maximum_temp = {
-      maximum_temp: Math.floor(kelvinToCelsius(city.main.temp_max).toFixed(1))
-    };
-    Object.assign(city, main_temp);
-    Object.assign(city, minimum_temp);
-    Object.assign(city, maximum_temp);
-  });
 
   function switchWeatherIcons(currWeather) {
     switch (currWeather) {
@@ -130,8 +115,8 @@ const City = () => {
               </React.Fragment>
             ))}
             <ul key={uuid()}>
-              <li>{`Minumum temp: ${clickedDay.minimum_temp}`}</li>
-              <li>{`Maximum temp: ${clickedDay.maximum_temp}`}</li>
+              <li>{`Minumum temp: ${clickedDay.main.temp_min}`}</li>
+              <li>{`Maximum temp: ${clickedDay.main.temp_max}`}</li>
             </ul>
           </WeatherCards>
 
@@ -162,21 +147,21 @@ const City = () => {
               <Tooltip />
               <Area
                 type="monotone"
-                dataKey="main_temp"
+                dataKey="main.main_temp"
                 stroke="#888"
                 fill="url(#main)"
                 fillOpacity={1}
               />
               <Area
                 type="monotone"
-                dataKey="minimum_temp"
+                dataKey="main.temp_min"
                 stroke="#8884d8"
                 fill="url(#min)"
                 fillOpacity={1}
               />
               <Area
                 type="monotone"
-                dataKey="maximum_temp"
+                dataKey="main.temp_max"
                 stroke="red"
                 fill="url(#max)"
                 fillOpacity={1}
