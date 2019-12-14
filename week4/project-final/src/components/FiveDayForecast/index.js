@@ -58,28 +58,28 @@ const FiveDayForeCast = props => {
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="dt_txt" />
+          <XAxis dataKey="dt" />
           <YAxis />
           <Tooltip />
           <Area
             type="monotone"
             dataKey="main.main_temp"
-            stroke="#888"
             fill="url(#main)"
+            stackId="a"
             fillOpacity={1}
           />
           <Area
             type="monotone"
             dataKey="main.temp_min"
-            stroke="#8884d8"
             fill="url(#min)"
+            stackId="a"
             fillOpacity={1}
           />
           <Area
             type="monotone"
             dataKey="main.temp_max"
-            stroke="red"
             fill="url(#max)"
+            stackId="a"
             fillOpacity={1}
           />
           <Brush dataKey="dt_txt" height={40} stroke="#ad62aa" />

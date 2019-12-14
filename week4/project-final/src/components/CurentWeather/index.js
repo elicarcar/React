@@ -1,20 +1,20 @@
 import React from "react";
 import {
   ResponsiveContainer,
-  AreaChart,
-  Area,
+  BarChart,
+  Bar,
   CartesianGrid,
   XAxis,
   YAxis,
   Tooltip,
-  Brush
+  Legend
 } from "recharts";
 
 const CurrentWeather = props => {
   return (
     <div>
       <ResponsiveContainer height={400}>
-        <AreaChart
+        <BarChart
           height={400}
           data={props.currentWeather}
           className="area-chart"
@@ -35,24 +35,25 @@ const CurrentWeather = props => {
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="name " />
           <YAxis />
           <Tooltip />
-          <Area
+          <Legend />
+          <Bar
             type="monotone"
             dataKey="main.temp"
             stroke="#888"
             fill="url(#main)"
             fillOpacity={1}
           />
-          <Area
+          <Bar
             type="monotone"
             dataKey="main.temp_min"
             stroke="#8884d8"
             fill="url(#min)"
             fillOpacity={1}
           />
-          <Area
+          <Bar
             type="monotone"
             dataKey="main.temp_max"
             stroke="red"
@@ -60,7 +61,7 @@ const CurrentWeather = props => {
             fillOpacity={1}
           />
           {/* <Brush dataKey="" height={40} stroke="#ad62aa" /> */}
-        </AreaChart>
+        </BarChart>
       </ResponsiveContainer>
     </div>
   );
