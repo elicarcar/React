@@ -65,3 +65,19 @@ a:hover {
   margin-top: 20px;
   margin-left: 40px;
 }
+
+.btn-div {
+  display: flex;
+  justify-content: space-around;
+}
+
+button {
+  margin: 30px;
+  outline: none;
+  padding: 10px;
+  background: black;
+  color: white;
+  font-size: 25px;
+  border: 1px groove black;
+  cursor: pointer;
+}
