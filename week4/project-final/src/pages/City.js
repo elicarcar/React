@@ -36,11 +36,8 @@ const City = () => {
       }
       const dailyWeatherData = await res.json();
       const weatherData = await res2.json();
-      console.log("hourly", weatherData);
 
       const { list } = dailyWeatherData;
-      console.log(list);
-      console.log(Array.isArray(list));
       setGeneralWeatherInfo(dailyWeatherData);
       setCurrentWeather([weatherData]);
       setCityWeatherData(list);
@@ -97,7 +94,7 @@ const City = () => {
               Hourly Weather
             </button>
             <button onClick={() => setDisplay5HourForecast(true)}>
-              5 Day Forecast Weather
+              5 Day Forecast
             </button>
           </div>
           <img
@@ -121,7 +118,12 @@ const City = () => {
           ) : (
             <React.Fragment>
               <h1>Current weather of {name} </h1>{" "}
-              <CurrentWeather currentWeather={currentWeather} />
+              <CurrentWeather
+                currentWeather={currentWeather}
+                cityId={cityId}
+                name={name}
+                switchWeatherIcons={switchWeatherIcons}
+              />
             </React.Fragment>
           )}
         </div>

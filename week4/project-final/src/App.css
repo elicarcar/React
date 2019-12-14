@@ -32,11 +32,17 @@ a:hover {
   text-align: center;
 }
 
-.icons {
+.icons,
+.icons-small {
   width: 70px;
   height: 60px;
   float: right;
   padding-right: 30px;
+}
+
+.icons-small {
+  width: 50px;
+  height: 40px;
 }
 
 .responsive-container {

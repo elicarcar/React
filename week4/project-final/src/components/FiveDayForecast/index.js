@@ -65,22 +65,22 @@ const FiveDayForeCast = props => {
             type="monotone"
             dataKey="main.main_temp"
             fill="url(#main)"
-            stackId="a"
             fillOpacity={1}
+            stroke="#888"
           />
           <Area
             type="monotone"
             dataKey="main.temp_min"
             fill="url(#min)"
-            stackId="a"
             fillOpacity={1}
+            stroke="#8884d8"
           />
           <Area
             type="monotone"
             dataKey="main.temp_max"
             fill="url(#max)"
-            stackId="a"
             fillOpacity={1}
+            stroke="red"
           />
           <Brush dataKey="dt_txt" height={40} stroke="#ad62aa" />
         </AreaChart>
